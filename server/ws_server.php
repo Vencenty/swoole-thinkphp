@@ -10,7 +10,7 @@ class WS
 
         $this->server->set([
             'enable_static_handler' => true,
-            'document_root' => '/www/swoole/tp5/public/static',
+            'document_root' => '/www/swoole/tp5/public/static/live',
             'worker_num'    => 4,
             'task_worker_num'   => 10,
         ]);

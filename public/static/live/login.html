@@ -85,13 +85,16 @@
   登录
 </header>
 <form class="login" id="form">
-  <h2>singwa体育赛事图文直播平台</h2>
+  <h2>聊天室</h2>
   <div class="login-item">
     <input type="text" placeholder="手机号" class="phone-num" name="phone_num"/>
     <button type="button" id="authCodeBtn">验证码</button>
   </div>
   <div class="login-item">
     <input type="text" placeholder="验证码" name="code"/>
+  </div>
+  <div class="login-item">
+    <input type="text" placeholder="留下网名" name="alias"/>
   </div>
   <button type="submit" class="submit-btn" id="submit-btn">进入平台</button>
 </form>
@@ -123,7 +126,7 @@
       $.get("http://swoole.vencenty.cn:8888/index/user/login?" + formData, function (data) {
         data = JSON.parse(data);
         if(data.errno === 0) {
-          window.location.href = 'http://swoole.vencenty.cn:8888/index.html';
+          window.location.href = 'http://swoole.vencenty.cn:8888/chart.html';
         }else{
           alert('发生错误,错误编码为:'+data.errno +'\n错误信息:'+data.errmsg);
         }
