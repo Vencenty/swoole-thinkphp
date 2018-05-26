@@ -1,5 +1,7 @@
 <?php
 
+use app\common\Redis;
+
 class WS
 {
     protected $server;
@@ -8,11 +10,17 @@ class WS
     {
         $this->server = new swoole_websocket_server('0.0.0.0', '8888');
 
+        $redis = new \Redis();
+        $redis->connect('127.0.0.1', '6379');
+        $redis->flushAll();
+
+
+
         $this->server->set([
             'enable_static_handler' => true,
-            'document_root' => '/www/swoole/tp5/public/static/live',
-            'worker_num'    => 4,
-            'task_worker_num'   => 10,
+            'document_root'         => '/www/swoole/tp5/public/static/live',
+            'worker_num'            => 4,
+            'task_worker_num'       => 10,
         ]);
 
         $this->server->on('WorkerStart', function () {
@@ -49,6 +57,10 @@ class WS
             echo "任务:{$task_id}完成;回调数据为{$data}\n";
         });
 
+        $this->server->on('open', function ($server, $request) {
+            Redis::getInstance()->sAdd(config('chart.online_user'), $request->fd);
+        });
+
         $this->server->on('message', function () {
 
         });
@@ -60,22 +72,22 @@ class WS
     {
         $_GET = $_POST = [];
 
-        if ( isset($request->get) ) {
+        if (isset($request->get)) {
             foreach ($request->get as $k => $v) {
                 $_GET[$k] = $v;
             }
-         }
-        if ( isset($request->post) ) {
+        }
+        if (isset($request->post)) {
             foreach ($request->post as $k => $v) {
                 $_POST[$k] = $v;
             }
         }
-        if ( isset($request->header) ) {
+        if (isset($request->header)) {
             foreach ($request->header as $k => $v) {
                 $_SERVER[strtoupper($k)] = $v;
             }
         }
-        if ( isset($request->server) ) {
+        if (isset($request->server)) {
             foreach ($request->server as $k => $v) {
                 $_SERVER[strtoupper($k)] = $v;
             }

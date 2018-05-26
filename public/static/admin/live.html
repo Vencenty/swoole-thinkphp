@@ -164,8 +164,16 @@
   });
 
   // 文件上传成功，给item添加成功class, 用样式标记上传成功。
-  uploader.on('uploadSuccess', function (file) {
-    $('#' + file.id).addClass('upload-state-done');
+  uploader.on('uploadSuccess', function (file, response) {
+    let $file = $('#' + file.id);
+    if (response.errno === 0) {
+      const dom = `
+        <input type="hidden" name="image" value="${response.data.image}"/>
+      `;
+      $file.append(dom);
+    }
+
+    $file.addClass('upload-state-done');
   });
 
   // 文件上传失败，显示上传出错。

@@ -52,4 +52,23 @@ class Redis
             $this->redis->setex($key, $expire_time, $value);
     }
 
+    public function sAdd($key, $value)
+    {
+        return $this->redis->sAdd($key, $value);
+    }
+
+    public function sRem($key, $value)
+    {
+        return $this->redis->sRem($key, $value);
+    }
+
+    public function sMembers($key)
+    {
+        return $this->redis->sMembers($key);
+    }
+
+    public function flushAll()
+    {
+        return $this->redis->flushAll();
+    }
 }
